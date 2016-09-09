@@ -71,8 +71,7 @@ def win(board):
         else:
             turn = 1
         print ("\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlayer {} wins!".format(turn))
-        return False
-    return True
+        play_again()
 def tie(board):
     a = board[0][0]
     b = board[0][1]
@@ -136,8 +135,11 @@ def user_input():
             board[2][2] = OXturn
             change_turn()
         else:
-            print ("Please give a valid input")
+            print ("Cant write there")
             user_input()
+    else:
+        print ("Please give a valid input")
+        user_input()
     '''  0   1   2
     0    q / w / e
     1    a / s / d
@@ -148,18 +150,34 @@ def instructions():
     print ("q / w / e")
     print ("a / s / d")
     print ("z / x / c")
+def play_again():
+    global board
+    global OXturn
+    if input("Want to play again? (Y/N)").upper() == "Y":
+        board = []
+        board = table()
+        print_board(board)
+
+        game()
 def game():
+    '''
+    To-Do:
+        Cuando gana el jugador 2 y se reinicia el juego este tiene 2 turnos
+        Al iniciar - HECHO
+    '''
+    global OXturn
+    OXturn = "X"
+    change_turn()
     instructions()
-    while win(board):
+    while True:
         user_input()
-        if tie(board):
-            print_board(board)
-            if input("Its a tie\nWanna play again?(Y/N)").lower() == "n":
-                break
+        if tie(board) or win(board):
+            print ("Its a tie")
+            play_again()
     print_board(board)
+
 
 board = table()
 input_board = table()
 turn = 1
-OXturn = "X"
 game()
